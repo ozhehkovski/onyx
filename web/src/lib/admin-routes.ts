@@ -1,5 +1,6 @@
 import { Permission } from "@/lib/types";
 import { Tier } from "@/lib/settings/types";
+import { tierAtLeast } from "@/lib/tiers";
 import { IconFunctionComponent } from "@opal/types";
 import {
   SvgActions,
@@ -18,6 +19,7 @@ import {
   SvgGlobe,
   SvgHistory,
   SvgImage,
+  SvgLineChartUp,
   SvgLinkedDots,
   SvgMcp,
   SvgOnyxOctagon,
@@ -51,6 +53,12 @@ export interface FeatureFlags {
   opensearchEnabled: boolean;
   queryHistoryEnabled: boolean;
   craftAvailable: boolean;
+}
+
+// The licensed Usage pages are hidden when this fork's MIT chat-insights
+// pages cover them, so the sidebar does not list locked duplicates.
+function hasLicensedUsagePages(flags: FeatureFlags): boolean {
+  return tierAtLeast(flags.tier, Tier.BUSINESS);
 }
 
 /**
@@ -439,7 +447,8 @@ export const ADMIN_ROUTES = {
     requiredPermission: Permission.FULL_ADMIN_PANEL_ACCESS,
     section: "Usage",
     requiredTier: Tier.BUSINESS,
-    visibleWhen: null,
+    // Replaced by CHAT_INSIGHTS_USAGE below unless a license unlocks it.
+    visibleWhen: hasLicensedUsagePages,
   },
   WORKSPACE_ANALYTICS: {
     path: "/admin/performance/analytics",
@@ -449,7 +458,8 @@ export const ADMIN_ROUTES = {
     requiredPermission: Permission.FULL_ADMIN_PANEL_ACCESS,
     section: "Usage",
     requiredTier: Tier.BUSINESS,
-    visibleWhen: null,
+    // Replaced by CHAT_INSIGHTS_FEEDBACK below unless a license unlocks it.
+    visibleWhen: hasLicensedUsagePages,
   },
   QUERY_HISTORY: {
     path: "/admin/performance/query-history",
@@ -459,7 +469,40 @@ export const ADMIN_ROUTES = {
     requiredPermission: Permission.READ_QUERY_HISTORY,
     section: "Usage",
     requiredTier: Tier.BUSINESS,
-    visibleWhen: (f: FeatureFlags) => f.queryHistoryEnabled,
+    // Replaced by CHAT_INSIGHTS_HISTORY below unless a license unlocks it.
+    visibleWhen: (f: FeatureFlags) =>
+      f.queryHistoryEnabled && hasLicensedUsagePages(f),
+  },
+  // MIT chat insights, served under /admin/chat-insights (never EE-rewritten).
+  CHAT_INSIGHTS_USAGE: {
+    path: "/admin/chat-insights/usage",
+    icon: SvgLineChartUp,
+    title: "Chat Usage",
+    sidebarLabel: "Chat Usage",
+    requiredPermission: Permission.FULL_ADMIN_PANEL_ACCESS,
+    section: "Usage",
+    requiredTier: null,
+    visibleWhen: null,
+  },
+  CHAT_INSIGHTS_FEEDBACK: {
+    path: "/admin/chat-insights/feedback",
+    icon: SvgThumbsUp,
+    title: "Chat Ratings",
+    sidebarLabel: "Chat Ratings",
+    requiredPermission: Permission.FULL_ADMIN_PANEL_ACCESS,
+    section: "Usage",
+    requiredTier: null,
+    visibleWhen: null,
+  },
+  CHAT_INSIGHTS_HISTORY: {
+    path: "/admin/chat-insights/history",
+    icon: SvgBubbleText,
+    title: "Chat History",
+    sidebarLabel: "Chat History",
+    requiredPermission: Permission.READ_QUERY_HISTORY,
+    section: "Usage",
+    requiredTier: null,
+    visibleWhen: null,
   },
   // Tracing config is not supported on multi-tenant cloud.
   TRACING: {

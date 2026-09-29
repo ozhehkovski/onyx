@@ -231,6 +231,17 @@ export const SWR_KEYS = {
   adminChatSessionHistory: "/api/admin/chat-session-history",
   adminChatSession: (id: string) => `/api/admin/chat-session-history/${id}`,
 
+  // ── Chat Insights ─────────────────────────────────────────────────────────
+  chatInsightsUsage: "/api/admin/chat-insights/usage",
+  chatInsightsFeedback: "/api/admin/chat-insights/feedback",
+  chatInsightsSessions: "/api/admin/chat-insights/sessions",
+  chatInsightsSession: (id: string) =>
+    `/api/admin/chat-insights/sessions/${encodeURIComponent(id)}`,
+  chatInsightsExport: "/api/admin/chat-insights/export",
+  chatInsightsSessionExport: (id: string) =>
+    `/api/admin/chat-insights/sessions/${encodeURIComponent(id)}/export`,
+  userChatExport: "/api/user/chat-export",
+
   // ── MCP Server (per-ID) ───────────────────────────────────────────────────
   adminMcpServer: (id: number) => `/api/admin/mcp/servers/${id}`,
 

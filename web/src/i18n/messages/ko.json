@@ -7302,6 +7302,16 @@
             "namePattern": "소문자, 숫자, 하이픈만 사용하세요",
             "nameRequired": "이름은 필수 항목입니다",
             "providerTypeRequired": "공급자 유형은 필수 항목입니다"
+          },
+          "samlMetadata": {
+            "title": "IdP 메타데이터에서 가져오기",
+            "description": "ID 공급자의 메타데이터 URL을 붙여넣으면 아래 IdP 필드가 자동으로 채워집니다. Keycloak의 경우: https://keycloak.example.com/realms/REALM/protocol/saml/descriptor",
+            "placeholder": "https://idp.example.com/realms/company/protocol/saml/descriptor",
+            "button": "가져오기",
+            "toasts": {
+              "imported": "메타데이터로 IdP 필드를 채웠습니다",
+              "importFailed": "메타데이터를 가져오지 못했습니다"
+            }
           }
         }
       },
@@ -8618,6 +8628,267 @@
         "firecrawlBaseUrl": {
           "label": "API 기본 URL",
           "description": "Firecrawl API 기본 URL입니다."
+        }
+      }
+    },
+    "chatInsights": {
+      "common": {
+        "emptyTable": "이 기간의 데이터가 없습니다.",
+        "notAvailable": "—",
+        "loadError": {
+          "title": "채팅 인사이트를 불러오지 못했습니다. 나중에 다시 시도하세요."
+        },
+        "forbidden": {
+          "title": "이 페이지에 접근할 권한이 없습니다",
+          "description": "채팅 인사이트를 볼 수 있는 권한은 관리자에게 요청하세요."
+        },
+        "feedbackTag": {
+          "positive": "긍정",
+          "negative": "부정",
+          "mixed": "혼합",
+          "none": "피드백 없음"
+        },
+        "export": {
+          "json": "JSON 내보내기",
+          "csv": "CSV 내보내기",
+          "toasts": {
+            "failed": "내보내기에 실패했습니다. 다시 시도하세요.",
+            "forbidden": "채팅을 내보낼 권한이 없습니다."
+          }
+        }
+      },
+      "usage": {
+        "page": {
+          "description": "시간에 따른 채팅 세션, 메시지, 활성 사용자 수입니다."
+        },
+        "kpi": {
+          "sessions": {
+            "label": "세션"
+          },
+          "userMessages": {
+            "label": "사용자 메시지"
+          },
+          "activeUsers": {
+            "label": "활성 사용자"
+          },
+          "avgMessages": {
+            "label": "세션당 평균 메시지 수"
+          }
+        },
+        "chart": {
+          "title": "일별 활동",
+          "description": "일별 세션, 사용자 메시지, 활성 사용자 수 (UTC).",
+          "empty": "이 기간에는 채팅 활동이 없습니다.",
+          "series": {
+            "sessions": {
+              "label": "세션"
+            },
+            "userMessages": {
+              "label": "사용자 메시지"
+            },
+            "activeUsers": {
+              "label": "활성 사용자"
+            }
+          }
+        },
+        "topUsers": {
+          "title": "상위 사용자",
+          "columns": {
+            "user": {
+              "header": "사용자"
+            },
+            "sessions": {
+              "header": "세션"
+            },
+            "userMessages": {
+              "header": "메시지"
+            },
+            "lastActive": {
+              "header": "마지막 활동"
+            }
+          }
+        },
+        "topAgents": {
+          "title": "상위 에이전트",
+          "columns": {
+            "agent": {
+              "header": "에이전트"
+            },
+            "sessions": {
+              "header": "세션"
+            },
+            "userMessages": {
+              "header": "메시지"
+            },
+            "uniqueUsers": {
+              "header": "고유 사용자"
+            }
+          }
+        },
+        "models": {
+          "title": "모델",
+          "columns": {
+            "model": {
+              "header": "모델"
+            },
+            "assistantMessages": {
+              "header": "응답"
+            }
+          }
+        }
+      },
+      "feedback": {
+        "page": {
+          "description": "사용자가 답변에 남긴 긍정 및 부정 평가입니다."
+        },
+        "kpi": {
+          "positive": {
+            "label": "긍정 평가"
+          },
+          "negative": {
+            "label": "부정 평가"
+          },
+          "satisfaction": {
+            "label": "만족도"
+          },
+          "coverage": {
+            "label": "평가 비율",
+            "hint": "{count, plural, other {답변 #개 중}}"
+          }
+        },
+        "chart": {
+          "title": "일별 평가",
+          "description": "일별 긍정 및 부정 평가 수 (UTC).",
+          "empty": "이 기간에는 평가가 없습니다.",
+          "series": {
+            "positive": {
+              "label": "긍정"
+            },
+            "negative": {
+              "label": "부정"
+            }
+          }
+        },
+        "breakdown": {
+          "byAgent": {
+            "title": "에이전트별 평가"
+          },
+          "byModel": {
+            "title": "모델별 평가"
+          },
+          "columns": {
+            "agent": {
+              "header": "에이전트"
+            },
+            "model": {
+              "header": "모델"
+            },
+            "positive": {
+              "header": "긍정"
+            },
+            "negative": {
+              "header": "부정"
+            },
+            "satisfaction": {
+              "header": "만족도"
+            }
+          }
+        },
+        "reasons": {
+          "title": "부정 피드백 사유",
+          "description": "사용자가 부정 평가를 남길 때 선택한 미리 정의된 사유입니다.",
+          "count": "{count, plural, other {평가 #개}}"
+        },
+        "recent": {
+          "title": "최근 피드백",
+          "description": "최신 평가 50개입니다. 항목을 선택하면 채팅이 열립니다.",
+          "positive": "긍정",
+          "negative": "부정",
+          "unrated": "평가 없음",
+          "noAgent": "에이전트 없음",
+          "noQuery": "기록된 질문 없음",
+          "meta": "{user} · {agent} · {time}",
+          "comment": "댓글: {comment}",
+          "openSession": {
+            "ariaLabel": "채팅 세션 열기"
+          }
+        }
+      },
+      "history": {
+        "page": {
+          "description": "모든 사용자의 채팅 세션을 검색하고 검토합니다."
+        },
+        "disabled": {
+          "title": "쿼리 기록을 사용할 수 없습니다",
+          "description": "이 워크스페이스에서 쿼리 기록이 꺼져 있거나 볼 수 있는 권한이 없습니다."
+        },
+        "filters": {
+          "feedback": {
+            "placeholder": "피드백",
+            "options": {
+              "all": "모든 피드백",
+              "positive": "긍정",
+              "negative": "부정",
+              "mixed": "혼합",
+              "none": "피드백 없음"
+            }
+          },
+          "userEmail": {
+            "placeholder": "사용자 이메일로 필터링"
+          },
+          "q": {
+            "placeholder": "메시지 검색"
+          }
+        },
+        "columns": {
+          "user": {
+            "header": "사용자"
+          },
+          "agent": {
+            "header": "에이전트"
+          },
+          "firstMessage": {
+            "header": "첫 메시지"
+          },
+          "messages": {
+            "header": "메시지"
+          },
+          "feedback": {
+            "header": "피드백"
+          },
+          "created": {
+            "header": "생성일"
+          }
+        },
+        "noAgent": "에이전트 없음",
+        "noFirstMessage": "메시지 없음",
+        "deletedTag": "삭제됨",
+        "rowLabel": "{user}의 채팅 세션 열기"
+      },
+      "session": {
+        "title": "채팅 세션",
+        "back": "뒤로",
+        "notFound": {
+          "title": "채팅 세션을 찾을 수 없습니다"
+        },
+        "noMessages": "이 채팅 세션에는 메시지가 없습니다.",
+        "roles": {
+          "user": "사용자",
+          "assistant": "어시스턴트"
+        },
+        "model": "모델: {model}",
+        "error": "오류: {error}",
+        "meta": {
+          "user": "사용자: {user}",
+          "agent": "에이전트: {agent}",
+          "noAgent": "에이전트 없음",
+          "created": "생성일: {time}",
+          "deleted": "삭제됨"
+        },
+        "feedback": {
+          "positive": "긍정",
+          "negative": "부정",
+          "unrated": "평가 없음"
         }
       }
     }
@@ -13623,6 +13894,18 @@
         "title": "재생 속도"
       },
       "title": "음성"
+    },
+    "chatExport": {
+      "title": "내 데이터",
+      "exportChats": {
+        "title": "내 채팅 내보내기",
+        "description": "모든 채팅 세션을 JSON 또는 CSV 파일로 다운로드합니다.",
+        "json": "JSON",
+        "csv": "CSV"
+      },
+      "toasts": {
+        "failed": "채팅을 내보내지 못했습니다. 다시 시도하세요."
+      }
     }
   },
   "sidebar": {
@@ -13746,6 +14029,15 @@
         },
         "webSearch": {
           "label": "웹 검색"
+        },
+        "chatInsightsUsage": {
+          "label": "채팅 사용량"
+        },
+        "chatInsightsFeedback": {
+          "label": "채팅 평가"
+        },
+        "chatInsightsHistory": {
+          "label": "채팅 기록"
         }
       },
       "sections": {

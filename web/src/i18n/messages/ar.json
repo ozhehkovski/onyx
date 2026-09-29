@@ -7302,6 +7302,16 @@
             "namePattern": "استخدم أحرفًا صغيرة وأرقامًا وشرطات فقط",
             "nameRequired": "الاسم مطلوب",
             "providerTypeRequired": "نوع الموفر مطلوب"
+          },
+          "samlMetadata": {
+            "title": "الاستيراد من بيانات IdP الوصفية",
+            "description": "الصق عنوان URL للبيانات الوصفية لمزوّد الهوية لديك لملء حقول IdP أدناه. بالنسبة إلى Keycloak: https://keycloak.example.com/realms/REALM/protocol/saml/descriptor",
+            "placeholder": "https://idp.example.com/realms/company/protocol/saml/descriptor",
+            "button": "استيراد",
+            "toasts": {
+              "imported": "تم ملء حقول IdP من البيانات الوصفية",
+              "importFailed": "تعذّر استيراد البيانات الوصفية"
+            }
           }
         }
       },
@@ -8618,6 +8628,267 @@
         "firecrawlBaseUrl": {
           "label": "عنوان URL الأساسي لواجهة API",
           "description": "عنوان URL الأساسي لواجهة Firecrawl API الخاصة بك."
+        }
+      }
+    },
+    "chatInsights": {
+      "common": {
+        "emptyTable": "لا توجد بيانات لهذه الفترة.",
+        "notAvailable": "—",
+        "loadError": {
+          "title": "تعذّر تحميل تحليلات الدردشة. حاول مرة أخرى لاحقًا."
+        },
+        "forbidden": {
+          "title": "ليس لديك صلاحية الوصول إلى هذه الصفحة",
+          "description": "اطلب من أحد المسؤولين إذن عرض تحليلات الدردشة."
+        },
+        "feedbackTag": {
+          "positive": "إيجابي",
+          "negative": "سلبي",
+          "mixed": "مختلط",
+          "none": "بلا تقييم"
+        },
+        "export": {
+          "json": "تصدير JSON",
+          "csv": "تصدير CSV",
+          "toasts": {
+            "failed": "فشل التصدير. حاول مرة أخرى.",
+            "forbidden": "ليس لديك إذن لتصدير الدردشات."
+          }
+        }
+      },
+      "usage": {
+        "page": {
+          "description": "جلسات الدردشة والرسائل والمستخدمون النشطون بمرور الوقت."
+        },
+        "kpi": {
+          "sessions": {
+            "label": "الجلسات"
+          },
+          "userMessages": {
+            "label": "رسائل المستخدمين"
+          },
+          "activeUsers": {
+            "label": "المستخدمون النشطون"
+          },
+          "avgMessages": {
+            "label": "متوسط الرسائل لكل جلسة"
+          }
+        },
+        "chart": {
+          "title": "النشاط اليومي",
+          "description": "الجلسات ورسائل المستخدمين والمستخدمون النشطون يوميًا (UTC).",
+          "empty": "لا يوجد نشاط دردشة في هذه الفترة.",
+          "series": {
+            "sessions": {
+              "label": "الجلسات"
+            },
+            "userMessages": {
+              "label": "رسائل المستخدمين"
+            },
+            "activeUsers": {
+              "label": "المستخدمون النشطون"
+            }
+          }
+        },
+        "topUsers": {
+          "title": "أكثر المستخدمين نشاطًا",
+          "columns": {
+            "user": {
+              "header": "المستخدم"
+            },
+            "sessions": {
+              "header": "الجلسات"
+            },
+            "userMessages": {
+              "header": "الرسائل"
+            },
+            "lastActive": {
+              "header": "آخر نشاط"
+            }
+          }
+        },
+        "topAgents": {
+          "title": "أكثر الوكلاء استخدامًا",
+          "columns": {
+            "agent": {
+              "header": "الوكيل"
+            },
+            "sessions": {
+              "header": "الجلسات"
+            },
+            "userMessages": {
+              "header": "الرسائل"
+            },
+            "uniqueUsers": {
+              "header": "المستخدمون الفريدون"
+            }
+          }
+        },
+        "models": {
+          "title": "النماذج",
+          "columns": {
+            "model": {
+              "header": "النموذج"
+            },
+            "assistantMessages": {
+              "header": "الردود"
+            }
+          }
+        }
+      },
+      "feedback": {
+        "page": {
+          "description": "التقييمات الإيجابية والسلبية التي يمنحها المستخدمون للإجابات."
+        },
+        "kpi": {
+          "positive": {
+            "label": "التقييمات الإيجابية"
+          },
+          "negative": {
+            "label": "التقييمات السلبية"
+          },
+          "satisfaction": {
+            "label": "معدل الرضا"
+          },
+          "coverage": {
+            "label": "تغطية التقييمات",
+            "hint": "{count, plural, zero {من أصل # إجابة} one {من أصل إجابة واحدة} two {من أصل إجابتين} few {من أصل # إجابات} many {من أصل # إجابة} other {من أصل # إجابة}}"
+          }
+        },
+        "chart": {
+          "title": "التقييمات اليومية",
+          "description": "التقييمات الإيجابية والسلبية يوميًا (UTC).",
+          "empty": "لا توجد تقييمات في هذه الفترة.",
+          "series": {
+            "positive": {
+              "label": "إيجابي"
+            },
+            "negative": {
+              "label": "سلبي"
+            }
+          }
+        },
+        "breakdown": {
+          "byAgent": {
+            "title": "التقييمات حسب الوكيل"
+          },
+          "byModel": {
+            "title": "التقييمات حسب النموذج"
+          },
+          "columns": {
+            "agent": {
+              "header": "الوكيل"
+            },
+            "model": {
+              "header": "النموذج"
+            },
+            "positive": {
+              "header": "إيجابي"
+            },
+            "negative": {
+              "header": "سلبي"
+            },
+            "satisfaction": {
+              "header": "الرضا"
+            }
+          }
+        },
+        "reasons": {
+          "title": "أسباب التقييمات السلبية",
+          "description": "أسباب محددة مسبقًا يختارها المستخدمون عند إعطاء تقييم سلبي.",
+          "count": "{count, plural, zero {# تقييم} one {تقييم واحد} two {تقييمان} few {# تقييمات} many {# تقييمًا} other {# تقييم}}"
+        },
+        "recent": {
+          "title": "أحدث التقييمات",
+          "description": "أحدث 50 تقييمًا. اختر أحدها لفتح الدردشة.",
+          "positive": "إيجابي",
+          "negative": "سلبي",
+          "unrated": "غير مقيَّم",
+          "noAgent": "بلا وكيل",
+          "noQuery": "لم يتم تسجيل أي سؤال",
+          "meta": "{user} · {agent} · {time}",
+          "comment": "التعليق: {comment}",
+          "openSession": {
+            "ariaLabel": "فتح جلسة الدردشة"
+          }
+        }
+      },
+      "history": {
+        "page": {
+          "description": "ابحث في جلسات الدردشة لجميع المستخدمين وراجعها."
+        },
+        "disabled": {
+          "title": "سجل الاستعلامات غير متاح",
+          "description": "سجل الاستعلامات متوقف في مساحة العمل هذه، أو ليس لديك إذن لعرضه."
+        },
+        "filters": {
+          "feedback": {
+            "placeholder": "التقييم",
+            "options": {
+              "all": "جميع التقييمات",
+              "positive": "إيجابي",
+              "negative": "سلبي",
+              "mixed": "مختلط",
+              "none": "بلا تقييم"
+            }
+          },
+          "userEmail": {
+            "placeholder": "التصفية حسب البريد الإلكتروني للمستخدم"
+          },
+          "q": {
+            "placeholder": "بحث في الرسائل"
+          }
+        },
+        "columns": {
+          "user": {
+            "header": "المستخدم"
+          },
+          "agent": {
+            "header": "الوكيل"
+          },
+          "firstMessage": {
+            "header": "الرسالة الأولى"
+          },
+          "messages": {
+            "header": "الرسائل"
+          },
+          "feedback": {
+            "header": "التقييم"
+          },
+          "created": {
+            "header": "تاريخ الإنشاء"
+          }
+        },
+        "noAgent": "بلا وكيل",
+        "noFirstMessage": "بلا رسالة",
+        "deletedTag": "محذوفة",
+        "rowLabel": "فتح جلسة الدردشة الخاصة بـ {user}"
+      },
+      "session": {
+        "title": "جلسة الدردشة",
+        "back": "رجوع",
+        "notFound": {
+          "title": "لم يتم العثور على جلسة الدردشة"
+        },
+        "noMessages": "لا تحتوي جلسة الدردشة هذه على رسائل.",
+        "roles": {
+          "user": "المستخدم",
+          "assistant": "المساعد"
+        },
+        "model": "النموذج: {model}",
+        "error": "خطأ: {error}",
+        "meta": {
+          "user": "المستخدم: {user}",
+          "agent": "الوكيل: {agent}",
+          "noAgent": "بلا وكيل",
+          "created": "تاريخ الإنشاء: {time}",
+          "deleted": "محذوفة"
+        },
+        "feedback": {
+          "positive": "إيجابي",
+          "negative": "سلبي",
+          "unrated": "غير مقيَّم"
         }
       }
     }
@@ -13623,6 +13894,18 @@
         "title": "سرعة التشغيل"
       },
       "title": "الصوت"
+    },
+    "chatExport": {
+      "title": "بياناتك",
+      "exportChats": {
+        "title": "تصدير دردشاتي",
+        "description": "نزّل جميع جلسات الدردشة الخاصة بك كملف JSON أو CSV.",
+        "json": "JSON",
+        "csv": "CSV"
+      },
+      "toasts": {
+        "failed": "تعذّر تصدير دردشاتك. حاول مرة أخرى."
+      }
     }
   },
   "sidebar": {
@@ -13746,6 +14029,15 @@
         },
         "webSearch": {
           "label": "البحث في الويب"
+        },
+        "chatInsightsUsage": {
+          "label": "استخدام الدردشة"
+        },
+        "chatInsightsFeedback": {
+          "label": "تقييمات الدردشة"
+        },
+        "chatInsightsHistory": {
+          "label": "سجل الدردشة"
         }
       },
       "sections": {

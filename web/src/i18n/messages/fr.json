@@ -7302,6 +7302,16 @@
             "namePattern": "Utilisez uniquement des lettres minuscules, des chiffres et des traits d'union",
             "nameRequired": "Le nom est obligatoire",
             "providerTypeRequired": "Le type de fournisseur est obligatoire"
+          },
+          "samlMetadata": {
+            "title": "Importer depuis les métadonnées de l'IdP",
+            "description": "Collez l'URL des métadonnées de votre fournisseur d'identité pour renseigner les champs IdP ci-dessous. Pour Keycloak : https://keycloak.example.com/realms/REALM/protocol/saml/descriptor",
+            "placeholder": "https://idp.example.com/realms/company/protocol/saml/descriptor",
+            "button": "Importer",
+            "toasts": {
+              "imported": "Champs IdP renseignés à partir des métadonnées",
+              "importFailed": "Impossible d'importer les métadonnées"
+            }
           }
         }
       },
@@ -8618,6 +8628,267 @@
         "firecrawlBaseUrl": {
           "label": "URL de base de l'API",
           "description": "L'URL de base de votre API Firecrawl."
+        }
+      }
+    },
+    "chatInsights": {
+      "common": {
+        "emptyTable": "Aucune donnée pour cette période.",
+        "notAvailable": "—",
+        "loadError": {
+          "title": "Impossible de charger les statistiques des chats. Réessayez plus tard."
+        },
+        "forbidden": {
+          "title": "Vous n'avez pas accès à cette page",
+          "description": "Demandez à un administrateur l'autorisation de consulter les statistiques des chats."
+        },
+        "feedbackTag": {
+          "positive": "Positif",
+          "negative": "Négatif",
+          "mixed": "Mitigé",
+          "none": "Aucun retour"
+        },
+        "export": {
+          "json": "Exporter en JSON",
+          "csv": "Exporter en CSV",
+          "toasts": {
+            "failed": "Échec de l'exportation. Réessayez.",
+            "forbidden": "Vous n'avez pas l'autorisation d'exporter les chats."
+          }
+        }
+      },
+      "usage": {
+        "page": {
+          "description": "Sessions de chat, messages et utilisateurs actifs au fil du temps."
+        },
+        "kpi": {
+          "sessions": {
+            "label": "Sessions"
+          },
+          "userMessages": {
+            "label": "Messages des utilisateurs"
+          },
+          "activeUsers": {
+            "label": "Utilisateurs actifs"
+          },
+          "avgMessages": {
+            "label": "Moy. de messages par session"
+          }
+        },
+        "chart": {
+          "title": "Activité quotidienne",
+          "description": "Sessions, messages des utilisateurs et utilisateurs actifs par jour (UTC).",
+          "empty": "Aucune activité de chat sur cette période.",
+          "series": {
+            "sessions": {
+              "label": "Sessions"
+            },
+            "userMessages": {
+              "label": "Messages des utilisateurs"
+            },
+            "activeUsers": {
+              "label": "Utilisateurs actifs"
+            }
+          }
+        },
+        "topUsers": {
+          "title": "Principaux utilisateurs",
+          "columns": {
+            "user": {
+              "header": "Utilisateur"
+            },
+            "sessions": {
+              "header": "Sessions"
+            },
+            "userMessages": {
+              "header": "Messages"
+            },
+            "lastActive": {
+              "header": "Dernière activité"
+            }
+          }
+        },
+        "topAgents": {
+          "title": "Principaux agents",
+          "columns": {
+            "agent": {
+              "header": "Agent"
+            },
+            "sessions": {
+              "header": "Sessions"
+            },
+            "userMessages": {
+              "header": "Messages"
+            },
+            "uniqueUsers": {
+              "header": "Utilisateurs uniques"
+            }
+          }
+        },
+        "models": {
+          "title": "Modèles",
+          "columns": {
+            "model": {
+              "header": "Modèle"
+            },
+            "assistantMessages": {
+              "header": "Réponses"
+            }
+          }
+        }
+      },
+      "feedback": {
+        "page": {
+          "description": "Les évaluations positives et négatives que les utilisateurs donnent aux réponses."
+        },
+        "kpi": {
+          "positive": {
+            "label": "Évaluations positives"
+          },
+          "negative": {
+            "label": "Évaluations négatives"
+          },
+          "satisfaction": {
+            "label": "Taux de satisfaction"
+          },
+          "coverage": {
+            "label": "Couverture des évaluations",
+            "hint": "{count, plural, one {Sur # réponse} many {Sur # réponses} other {Sur # réponses}}"
+          }
+        },
+        "chart": {
+          "title": "Évaluations quotidiennes",
+          "description": "Évaluations positives et négatives par jour (UTC).",
+          "empty": "Aucune évaluation sur cette période.",
+          "series": {
+            "positive": {
+              "label": "Positives"
+            },
+            "negative": {
+              "label": "Négatives"
+            }
+          }
+        },
+        "breakdown": {
+          "byAgent": {
+            "title": "Évaluations par agent"
+          },
+          "byModel": {
+            "title": "Évaluations par modèle"
+          },
+          "columns": {
+            "agent": {
+              "header": "Agent"
+            },
+            "model": {
+              "header": "Modèle"
+            },
+            "positive": {
+              "header": "Positives"
+            },
+            "negative": {
+              "header": "Négatives"
+            },
+            "satisfaction": {
+              "header": "Satisfaction"
+            }
+          }
+        },
+        "reasons": {
+          "title": "Motifs des retours négatifs",
+          "description": "Motifs prédéfinis que les utilisateurs sélectionnent avec une évaluation négative.",
+          "count": "{count, plural, one {# évaluation} many {# évaluations} other {# évaluations}}"
+        },
+        "recent": {
+          "title": "Retours récents",
+          "description": "Les 50 évaluations les plus récentes. Sélectionnez-en une pour ouvrir le chat.",
+          "positive": "Positive",
+          "negative": "Négative",
+          "unrated": "Non évaluée",
+          "noAgent": "Aucun agent",
+          "noQuery": "Aucune question enregistrée",
+          "meta": "{user} · {agent} · {time}",
+          "comment": "Commentaire : {comment}",
+          "openSession": {
+            "ariaLabel": "Ouvrir la session de chat"
+          }
+        }
+      },
+      "history": {
+        "page": {
+          "description": "Recherchez et consultez les sessions de chat de tous les utilisateurs."
+        },
+        "disabled": {
+          "title": "L'historique des requêtes n'est pas disponible",
+          "description": "L'historique des requêtes est désactivé pour cet espace de travail, ou vous n'avez pas l'autorisation de le consulter."
+        },
+        "filters": {
+          "feedback": {
+            "placeholder": "Retour",
+            "options": {
+              "all": "Tous les retours",
+              "positive": "Positif",
+              "negative": "Négatif",
+              "mixed": "Mitigé",
+              "none": "Aucun retour"
+            }
+          },
+          "userEmail": {
+            "placeholder": "Filtrer par e-mail de l'utilisateur"
+          },
+          "q": {
+            "placeholder": "Rechercher des messages"
+          }
+        },
+        "columns": {
+          "user": {
+            "header": "Utilisateur"
+          },
+          "agent": {
+            "header": "Agent"
+          },
+          "firstMessage": {
+            "header": "Premier message"
+          },
+          "messages": {
+            "header": "Messages"
+          },
+          "feedback": {
+            "header": "Retour"
+          },
+          "created": {
+            "header": "Créée le"
+          }
+        },
+        "noAgent": "Aucun agent",
+        "noFirstMessage": "Aucun message",
+        "deletedTag": "Supprimée",
+        "rowLabel": "Ouvrir la session de chat de {user}"
+      },
+      "session": {
+        "title": "Session de chat",
+        "back": "Retour",
+        "notFound": {
+          "title": "Session de chat introuvable"
+        },
+        "noMessages": "Cette session de chat ne contient aucun message.",
+        "roles": {
+          "user": "Utilisateur",
+          "assistant": "Assistant"
+        },
+        "model": "Modèle : {model}",
+        "error": "Erreur : {error}",
+        "meta": {
+          "user": "Utilisateur : {user}",
+          "agent": "Agent : {agent}",
+          "noAgent": "Aucun agent",
+          "created": "Créée le : {time}",
+          "deleted": "Supprimée"
+        },
+        "feedback": {
+          "positive": "Positif",
+          "negative": "Négatif",
+          "unrated": "Non évalué"
         }
       }
     }
@@ -13623,6 +13894,18 @@
         "title": "Vitesse de lecture"
       },
       "title": "Voix"
+    },
+    "chatExport": {
+      "title": "Vos données",
+      "exportChats": {
+        "title": "Exporter mes chats",
+        "description": "Téléchargez toutes vos sessions de chat au format JSON ou CSV.",
+        "json": "JSON",
+        "csv": "CSV"
+      },
+      "toasts": {
+        "failed": "Impossible d'exporter vos chats. Réessayez."
+      }
     }
   },
   "sidebar": {
@@ -13746,6 +14029,15 @@
         },
         "webSearch": {
           "label": "Recherche web"
+        },
+        "chatInsightsUsage": {
+          "label": "Utilisation des chats"
+        },
+        "chatInsightsFeedback": {
+          "label": "Évaluations des chats"
+        },
+        "chatInsightsHistory": {
+          "label": "Historique des chats"
         }
       },
       "sections": {

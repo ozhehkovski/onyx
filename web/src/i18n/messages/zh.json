@@ -7302,6 +7302,16 @@
             "namePattern": "只能使用小写字母、数字和连字符",
             "nameRequired": "名称为必填项",
             "providerTypeRequired": "提供商类型为必填项"
+          },
+          "samlMetadata": {
+            "title": "从 IdP 元数据导入",
+            "description": "粘贴身份提供商的元数据 URL，以自动填写下方的 IdP 字段。对于 Keycloak：https://keycloak.example.com/realms/REALM/protocol/saml/descriptor",
+            "placeholder": "https://idp.example.com/realms/company/protocol/saml/descriptor",
+            "button": "导入",
+            "toasts": {
+              "imported": "已从元数据填写 IdP 字段",
+              "importFailed": "无法导入元数据"
+            }
           }
         }
       },
@@ -8618,6 +8628,267 @@
         "firecrawlBaseUrl": {
           "label": "API 基础 URL",
           "description": "您的 Firecrawl API 基础 URL。"
+        }
+      }
+    },
+    "chatInsights": {
+      "common": {
+        "emptyTable": "此期间没有数据。",
+        "notAvailable": "—",
+        "loadError": {
+          "title": "加载聊天洞察失败。请稍后重试。"
+        },
+        "forbidden": {
+          "title": "您无权访问此页面",
+          "description": "请向管理员申请查看聊天洞察的权限。"
+        },
+        "feedbackTag": {
+          "positive": "好评",
+          "negative": "差评",
+          "mixed": "混合",
+          "none": "无反馈"
+        },
+        "export": {
+          "json": "导出 JSON",
+          "csv": "导出 CSV",
+          "toasts": {
+            "failed": "导出失败。请重试。",
+            "forbidden": "您没有导出聊天的权限。"
+          }
+        }
+      },
+      "usage": {
+        "page": {
+          "description": "聊天会话、消息和活跃用户随时间的变化。"
+        },
+        "kpi": {
+          "sessions": {
+            "label": "会话"
+          },
+          "userMessages": {
+            "label": "用户消息"
+          },
+          "activeUsers": {
+            "label": "活跃用户"
+          },
+          "avgMessages": {
+            "label": "每个会话的平均消息数"
+          }
+        },
+        "chart": {
+          "title": "每日活动",
+          "description": "每日的会话、用户消息和活跃用户数（UTC）。",
+          "empty": "此期间没有聊天活动。",
+          "series": {
+            "sessions": {
+              "label": "会话"
+            },
+            "userMessages": {
+              "label": "用户消息"
+            },
+            "activeUsers": {
+              "label": "活跃用户"
+            }
+          }
+        },
+        "topUsers": {
+          "title": "热门用户",
+          "columns": {
+            "user": {
+              "header": "用户"
+            },
+            "sessions": {
+              "header": "会话"
+            },
+            "userMessages": {
+              "header": "消息"
+            },
+            "lastActive": {
+              "header": "最后活跃"
+            }
+          }
+        },
+        "topAgents": {
+          "title": "热门智能体",
+          "columns": {
+            "agent": {
+              "header": "智能体"
+            },
+            "sessions": {
+              "header": "会话"
+            },
+            "userMessages": {
+              "header": "消息"
+            },
+            "uniqueUsers": {
+              "header": "独立用户"
+            }
+          }
+        },
+        "models": {
+          "title": "模型",
+          "columns": {
+            "model": {
+              "header": "模型"
+            },
+            "assistantMessages": {
+              "header": "回复"
+            }
+          }
+        }
+      },
+      "feedback": {
+        "page": {
+          "description": "用户对回答给出的好评和差评。"
+        },
+        "kpi": {
+          "positive": {
+            "label": "好评"
+          },
+          "negative": {
+            "label": "差评"
+          },
+          "satisfaction": {
+            "label": "满意度"
+          },
+          "coverage": {
+            "label": "评分覆盖率",
+            "hint": "{count, plural, other {共 # 条回答}}"
+          }
+        },
+        "chart": {
+          "title": "每日评分",
+          "description": "每日的好评和差评数（UTC）。",
+          "empty": "此期间没有评分。",
+          "series": {
+            "positive": {
+              "label": "好评"
+            },
+            "negative": {
+              "label": "差评"
+            }
+          }
+        },
+        "breakdown": {
+          "byAgent": {
+            "title": "按智能体统计的评分"
+          },
+          "byModel": {
+            "title": "按模型统计的评分"
+          },
+          "columns": {
+            "agent": {
+              "header": "智能体"
+            },
+            "model": {
+              "header": "模型"
+            },
+            "positive": {
+              "header": "好评"
+            },
+            "negative": {
+              "header": "差评"
+            },
+            "satisfaction": {
+              "header": "满意度"
+            }
+          }
+        },
+        "reasons": {
+          "title": "差评原因",
+          "description": "用户在给出差评时选择的预设原因。",
+          "count": "{count, plural, other {# 条评分}}"
+        },
+        "recent": {
+          "title": "最近的反馈",
+          "description": "最新的 50 条评分。选择一条即可打开聊天。",
+          "positive": "好评",
+          "negative": "差评",
+          "unrated": "未评分",
+          "noAgent": "无智能体",
+          "noQuery": "未记录问题",
+          "meta": "{user} · {agent} · {time}",
+          "comment": "评论：{comment}",
+          "openSession": {
+            "ariaLabel": "打开聊天会话"
+          }
+        }
+      },
+      "history": {
+        "page": {
+          "description": "搜索并查看所有用户的聊天会话。"
+        },
+        "disabled": {
+          "title": "查询历史记录不可用",
+          "description": "此工作区已关闭查询历史记录，或您无权查看。"
+        },
+        "filters": {
+          "feedback": {
+            "placeholder": "反馈",
+            "options": {
+              "all": "所有反馈",
+              "positive": "好评",
+              "negative": "差评",
+              "mixed": "混合",
+              "none": "无反馈"
+            }
+          },
+          "userEmail": {
+            "placeholder": "按用户电子邮件筛选"
+          },
+          "q": {
+            "placeholder": "搜索消息"
+          }
+        },
+        "columns": {
+          "user": {
+            "header": "用户"
+          },
+          "agent": {
+            "header": "智能体"
+          },
+          "firstMessage": {
+            "header": "第一条消息"
+          },
+          "messages": {
+            "header": "消息"
+          },
+          "feedback": {
+            "header": "反馈"
+          },
+          "created": {
+            "header": "创建时间"
+          }
+        },
+        "noAgent": "无智能体",
+        "noFirstMessage": "无消息",
+        "deletedTag": "已删除",
+        "rowLabel": "打开 {user} 的聊天会话"
+      },
+      "session": {
+        "title": "聊天会话",
+        "back": "返回",
+        "notFound": {
+          "title": "未找到聊天会话"
+        },
+        "noMessages": "此聊天会话没有消息。",
+        "roles": {
+          "user": "用户",
+          "assistant": "助手"
+        },
+        "model": "模型：{model}",
+        "error": "错误：{error}",
+        "meta": {
+          "user": "用户：{user}",
+          "agent": "智能体：{agent}",
+          "noAgent": "无智能体",
+          "created": "创建时间：{time}",
+          "deleted": "已删除"
+        },
+        "feedback": {
+          "positive": "好评",
+          "negative": "差评",
+          "unrated": "未评分"
         }
       }
     }
@@ -13623,6 +13894,18 @@
         "title": "播放速度"
       },
       "title": "语音"
+    },
+    "chatExport": {
+      "title": "您的数据",
+      "exportChats": {
+        "title": "导出我的聊天",
+        "description": "将您的所有聊天会话下载为 JSON 或 CSV 文件。",
+        "json": "JSON",
+        "csv": "CSV"
+      },
+      "toasts": {
+        "failed": "导出聊天失败。请重试。"
+      }
     }
   },
   "sidebar": {
@@ -13746,6 +14029,15 @@
         },
         "webSearch": {
           "label": "网页搜索"
+        },
+        "chatInsightsUsage": {
+          "label": "聊天使用情况"
+        },
+        "chatInsightsFeedback": {
+          "label": "聊天评分"
+        },
+        "chatInsightsHistory": {
+          "label": "聊天历史记录"
         }
       },
       "sections": {

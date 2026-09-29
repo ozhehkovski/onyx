@@ -48,6 +48,9 @@ export type AdminNavItemId =
   | "usage"
   | "analytics"
   | "queryHistory"
+  | "chatInsightsUsage"
+  | "chatInsightsFeedback"
+  | "chatInsightsHistory"
   | "tracing"
   | "exportLogs"
   | "upgradePlan";
@@ -108,6 +111,9 @@ export const NAV_ITEM_IDS: Record<
   USAGE: "usage",
   WORKSPACE_ANALYTICS: "analytics",
   QUERY_HISTORY: "queryHistory",
+  CHAT_INSIGHTS_USAGE: "chatInsightsUsage",
+  CHAT_INSIGHTS_FEEDBACK: "chatInsightsFeedback",
+  CHAT_INSIGHTS_HISTORY: "chatInsightsHistory",
   TRACING: "tracing",
   EXPORT_LOGS: "exportLogs",
   STANDARD_ANSWERS: null,

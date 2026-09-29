@@ -72,6 +72,7 @@ import usePromptShortcuts from "@/hooks/usePromptShortcuts";
 import ColorSwatch from "@/refresh-components/ColorSwatch";
 import { EmptyMessageCard } from "@opal/components";
 import Memories from "@/sections/settings/Memories";
+import ChatExport from "@/sections/settings/ChatExport";
 import { FederatedConnectorOAuthStatus } from "@/components/chat/FederatedOAuthModal";
 import {
   CHAT_BACKGROUND_OPTIONS,
@@ -871,6 +872,9 @@ function GeneralSettings() {
           </Card>
         </Section>
 
+        <Divider paddingParallel={0} paddingPerpendicular={0} />
+
+        <ChatExport />
         <Divider paddingParallel={0} paddingPerpendicular={0} />
 
         <Section gap={3}>

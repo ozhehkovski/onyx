@@ -7302,6 +7302,16 @@
             "namePattern": "小文字、数字、ハイフンのみを使用してください",
             "nameRequired": "名前は必須です",
             "providerTypeRequired": "プロバイダーの種類は必須です"
+          },
+          "samlMetadata": {
+            "title": "IdPメタデータからインポート",
+            "description": "IDプロバイダーのメタデータURLを貼り付けると、以下のIdPフィールドが自動入力されます。Keycloakの場合: https://keycloak.example.com/realms/REALM/protocol/saml/descriptor",
+            "placeholder": "https://idp.example.com/realms/company/protocol/saml/descriptor",
+            "button": "インポート",
+            "toasts": {
+              "imported": "メタデータからIdPフィールドを入力しました",
+              "importFailed": "メタデータをインポートできませんでした"
+            }
           }
         }
       },
@@ -8618,6 +8628,267 @@
         "firecrawlBaseUrl": {
           "label": "API ベース URL",
           "description": "Firecrawl API のベース URL。"
+        }
+      }
+    },
+    "chatInsights": {
+      "common": {
+        "emptyTable": "この期間のデータはありません。",
+        "notAvailable": "—",
+        "loadError": {
+          "title": "チャットインサイトの読み込みに失敗しました。後でもう一度お試しください。"
+        },
+        "forbidden": {
+          "title": "このページへのアクセス権がありません",
+          "description": "チャットインサイトを表示する権限について、管理者にお問い合わせください。"
+        },
+        "feedbackTag": {
+          "positive": "高評価",
+          "negative": "低評価",
+          "mixed": "混在",
+          "none": "フィードバックなし"
+        },
+        "export": {
+          "json": "JSONをエクスポート",
+          "csv": "CSVをエクスポート",
+          "toasts": {
+            "failed": "エクスポートに失敗しました。もう一度お試しください。",
+            "forbidden": "チャットをエクスポートする権限がありません。"
+          }
+        }
+      },
+      "usage": {
+        "page": {
+          "description": "チャットセッション数、メッセージ数、アクティブユーザー数の推移。"
+        },
+        "kpi": {
+          "sessions": {
+            "label": "セッション"
+          },
+          "userMessages": {
+            "label": "ユーザーメッセージ"
+          },
+          "activeUsers": {
+            "label": "アクティブユーザー"
+          },
+          "avgMessages": {
+            "label": "セッションあたりの平均メッセージ数"
+          }
+        },
+        "chart": {
+          "title": "日次アクティビティ",
+          "description": "1日あたりのセッション数、ユーザーメッセージ数、アクティブユーザー数（UTC）。",
+          "empty": "この期間のチャットアクティビティはありません。",
+          "series": {
+            "sessions": {
+              "label": "セッション"
+            },
+            "userMessages": {
+              "label": "ユーザーメッセージ"
+            },
+            "activeUsers": {
+              "label": "アクティブユーザー"
+            }
+          }
+        },
+        "topUsers": {
+          "title": "上位ユーザー",
+          "columns": {
+            "user": {
+              "header": "ユーザー"
+            },
+            "sessions": {
+              "header": "セッション"
+            },
+            "userMessages": {
+              "header": "メッセージ"
+            },
+            "lastActive": {
+              "header": "最終アクティブ"
+            }
+          }
+        },
+        "topAgents": {
+          "title": "上位エージェント",
+          "columns": {
+            "agent": {
+              "header": "エージェント"
+            },
+            "sessions": {
+              "header": "セッション"
+            },
+            "userMessages": {
+              "header": "メッセージ"
+            },
+            "uniqueUsers": {
+              "header": "ユニークユーザー"
+            }
+          }
+        },
+        "models": {
+          "title": "モデル",
+          "columns": {
+            "model": {
+              "header": "モデル"
+            },
+            "assistantMessages": {
+              "header": "応答"
+            }
+          }
+        }
+      },
+      "feedback": {
+        "page": {
+          "description": "ユーザーが回答に付けた高評価と低評価。"
+        },
+        "kpi": {
+          "positive": {
+            "label": "高評価"
+          },
+          "negative": {
+            "label": "低評価"
+          },
+          "satisfaction": {
+            "label": "満足度"
+          },
+          "coverage": {
+            "label": "評価カバレッジ",
+            "hint": "{count, plural, other {#件の回答中}}"
+          }
+        },
+        "chart": {
+          "title": "日次評価",
+          "description": "1日あたりの高評価と低評価（UTC）。",
+          "empty": "この期間の評価はありません。",
+          "series": {
+            "positive": {
+              "label": "高評価"
+            },
+            "negative": {
+              "label": "低評価"
+            }
+          }
+        },
+        "breakdown": {
+          "byAgent": {
+            "title": "エージェント別の評価"
+          },
+          "byModel": {
+            "title": "モデル別の評価"
+          },
+          "columns": {
+            "agent": {
+              "header": "エージェント"
+            },
+            "model": {
+              "header": "モデル"
+            },
+            "positive": {
+              "header": "高評価"
+            },
+            "negative": {
+              "header": "低評価"
+            },
+            "satisfaction": {
+              "header": "満足度"
+            }
+          }
+        },
+        "reasons": {
+          "title": "低評価の理由",
+          "description": "低評価を付ける際にユーザーが選択した定義済みの理由。",
+          "count": "{count, plural, other {#件の評価}}"
+        },
+        "recent": {
+          "title": "最近のフィードバック",
+          "description": "最新の50件の評価。選択するとチャットが開きます。",
+          "positive": "高評価",
+          "negative": "低評価",
+          "unrated": "未評価",
+          "noAgent": "エージェントなし",
+          "noQuery": "質問は記録されていません",
+          "meta": "{user} · {agent} · {time}",
+          "comment": "コメント: {comment}",
+          "openSession": {
+            "ariaLabel": "チャットセッションを開く"
+          }
+        }
+      },
+      "history": {
+        "page": {
+          "description": "すべてのユーザーのチャットセッションを検索して確認します。"
+        },
+        "disabled": {
+          "title": "クエリ履歴は利用できません",
+          "description": "このワークスペースではクエリ履歴が無効になっているか、表示する権限がありません。"
+        },
+        "filters": {
+          "feedback": {
+            "placeholder": "フィードバック",
+            "options": {
+              "all": "すべてのフィードバック",
+              "positive": "高評価",
+              "negative": "低評価",
+              "mixed": "混在",
+              "none": "フィードバックなし"
+            }
+          },
+          "userEmail": {
+            "placeholder": "ユーザーのメールアドレスで絞り込み"
+          },
+          "q": {
+            "placeholder": "メッセージを検索"
+          }
+        },
+        "columns": {
+          "user": {
+            "header": "ユーザー"
+          },
+          "agent": {
+            "header": "エージェント"
+          },
+          "firstMessage": {
+            "header": "最初のメッセージ"
+          },
+          "messages": {
+            "header": "メッセージ"
+          },
+          "feedback": {
+            "header": "フィードバック"
+          },
+          "created": {
+            "header": "作成日時"
+          }
+        },
+        "noAgent": "エージェントなし",
+        "noFirstMessage": "メッセージなし",
+        "deletedTag": "削除済み",
+        "rowLabel": "{user}のチャットセッションを開く"
+      },
+      "session": {
+        "title": "チャットセッション",
+        "back": "戻る",
+        "notFound": {
+          "title": "チャットセッションが見つかりません"
+        },
+        "noMessages": "このチャットセッションにはメッセージがありません。",
+        "roles": {
+          "user": "ユーザー",
+          "assistant": "アシスタント"
+        },
+        "model": "モデル: {model}",
+        "error": "エラー: {error}",
+        "meta": {
+          "user": "ユーザー: {user}",
+          "agent": "エージェント: {agent}",
+          "noAgent": "エージェントなし",
+          "created": "作成日時: {time}",
+          "deleted": "削除済み"
+        },
+        "feedback": {
+          "positive": "高評価",
+          "negative": "低評価",
+          "unrated": "未評価"
         }
       }
     }
@@ -13623,6 +13894,18 @@
         "title": "再生速度"
       },
       "title": "音声"
+    },
+    "chatExport": {
+      "title": "あなたのデータ",
+      "exportChats": {
+        "title": "チャットをエクスポート",
+        "description": "すべてのチャットセッションをJSONまたはCSVファイルとしてダウンロードします。",
+        "json": "JSON",
+        "csv": "CSV"
+      },
+      "toasts": {
+        "failed": "チャットのエクスポートに失敗しました。もう一度お試しください。"
+      }
     }
   },
   "sidebar": {
@@ -13746,6 +14029,15 @@
         },
         "webSearch": {
           "label": "Web 検索"
+        },
+        "chatInsightsUsage": {
+          "label": "チャット利用状況"
+        },
+        "chatInsightsFeedback": {
+          "label": "チャット評価"
+        },
+        "chatInsightsHistory": {
+          "label": "チャット履歴"
         }
       },
       "sections": {
