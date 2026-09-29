@@ -1,0 +1,99 @@
+# =============================================================================
+# ONYX FORK — LOCAL EVALUATION OVERLAY
+# =============================================================================
+# Runs this fork from local source with a preconfigured Keycloak (OIDC + SAML).
+# Built on top of the Onyx Lite overlay so it fits in ~6 GB of Docker memory:
+# chat, agents, projects, file uploads, SSO, analytics, query history and chat
+# export work; connector indexing / RAG search stay off (see onyx-lite).
+#
+# Usage (from deployment/docker_compose):
+#   ./start-local-fork.sh            # build + start
+#   docker compose -f docker-compose.yml -f docker-compose.onyx-lite.yml \
+#     -f docker-compose.local-fork.yml --env-file env.local-fork up -d
+#
+# URLs:
+#   Onyx      http://localhost:3030
+#   Keycloak  http://keycloak.localhost:8180  (admin console: admin / admin)
+# =============================================================================
+
+name: onyx-fork
+
+services:
+  api_server:
+    image: onyx-fork-backend:local
+    depends_on:
+      keycloak:
+        condition: service_healthy
+    environment:
+      - SSO_PROVIDERS_BOOTSTRAP_FILE=/sso/sso-providers.json
+      # One URL for browser and server: Chrome/Firefox resolve *.localhost to
+      # 127.0.0.1, and inside Docker the network alias points at Keycloak.
+      # OIDC requires the discovery URL to match the issuer, so both agree.
+      - KEYCLOAK_URL=http://keycloak.localhost:${KEYCLOAK_HOST_PORT:-8180}
+      - KEYCLOAK_OIDC_CLIENT_SECRET=${KEYCLOAK_OIDC_CLIENT_SECRET:-onyx-local-oidc-secret}
+      # Local only: Keycloak runs over plain http on the Docker network.
+      - ALLOW_INSECURE_SSO_IDP_URLS=true
+      - WEB_DOMAIN=http://localhost:${HOST_PORT:-3030}
+      - ONYX_QUERY_HISTORY_TYPE=${ONYX_QUERY_HISTORY_TYPE:-normal}
+      # Language of newly created users (en, pl, de, ...).
+      - DEFAULT_USER_LANGUAGE=${DEFAULT_LANGUAGE:-pl}
+      # Pure Community Edition: do not load any code from ee/ directories.
+      - LICENSE_ENFORCEMENT_ENABLED=false
+      - ENABLE_PAID_ENTERPRISE_EDITION_FEATURES=false
+    volumes:
+      - ./keycloak/sso-providers.json:/sso/sso-providers.json:ro
+
+  background:
+    image: onyx-fork-backend:local
+    environment:
+      - LICENSE_ENFORCEMENT_ENABLED=false
+      - ENABLE_PAID_ENTERPRISE_EDITION_FEATURES=false
+
+  web_server:
+    image: onyx-fork-web:local
+    environment:
+      - INTERNAL_URL=http://api_server:8080
+      # Language shown before sign-in (login page).
+      - DEFAULT_LOCALE=${DEFAULT_LANGUAGE:-pl}
+      - LICENSE_ENFORCEMENT_ENABLED=false
+      - ENABLE_PAID_ENTERPRISE_EDITION_FEATURES=false
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.3
+    command: ["start-dev", "--import-realm"]
+    environment:
+      - KC_BOOTSTRAP_ADMIN_USERNAME=admin
+      - KC_BOOTSTRAP_ADMIN_PASSWORD=admin
+      - KC_HOSTNAME=http://keycloak.localhost:${KEYCLOAK_HOST_PORT:-8180}
+      # Same port inside and outside the container, so the issuer URL works
+      # for the browser and for the api_server.
+      - KC_HTTP_PORT=${KEYCLOAK_HOST_PORT:-8180}
+      - KC_HTTP_ENABLED=true
+      - KC_HEALTH_ENABLED=true
+      - JAVA_OPTS_KC_HEAP=-Xms256m -Xmx512m
+    networks:
+      default:
+        aliases:
+          - keycloak.localhost
+    ports:
+      - "${KEYCLOAK_HOST_PORT:-8180}:${KEYCLOAK_HOST_PORT:-8180}"
+    volumes:
+      - ./keycloak/realm-onyx.json:/opt/keycloak/data/import/realm-onyx.json:ro
+      # Keeps realm signing keys stable across container re-creation; the
+      # SAML provider row stores the IdP certificate.
+      - keycloak_data:/opt/keycloak/data
+    healthcheck:
+      # The image has no curl; probe the management port with bash.
+      test:
+        [
+          "CMD-SHELL",
+          "exec 3<>/dev/tcp/127.0.0.1/9000 && printf 'GET /health/ready HTTP/1.1\\r\\nHost: localhost\\r\\nConnection: close\\r\\n\\r\\n' >&3 && grep -q '\"UP\"' <&3",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 30s
+    restart: unless-stopped
+
+volumes:
+  keycloak_data:

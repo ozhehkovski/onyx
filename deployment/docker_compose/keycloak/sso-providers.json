@@ -1,0 +1,25 @@
+[
+  {
+    "name": "keycloak",
+    "display_name": "Keycloak (OIDC)",
+    "provider_type": "oidc",
+    "allowed_email_domains": [],
+    "config": {
+      "client_id": "onyx",
+      "client_secret": "${KEYCLOAK_OIDC_CLIENT_SECRET}",
+      "openid_config_url": "${KEYCLOAK_URL}/realms/onyx/.well-known/openid-configuration",
+      "pkce_enabled": true
+    }
+  },
+  {
+    "name": "keycloak-saml",
+    "display_name": "Keycloak (SAML)",
+    "provider_type": "saml",
+    "allowed_email_domains": [],
+    "config": {
+      "sp_entity_id": "onyx-saml",
+      "email_attribute": "email",
+      "idp_metadata_url": "${KEYCLOAK_URL}/realms/onyx/protocol/saml/descriptor"
+    }
+  }
+]

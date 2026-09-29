@@ -83,6 +83,12 @@ from onyx.server.features.admin_banner.api import admin_router as admin_banner_r
 from onyx.server.features.build.api import admin_router as build_admin_router
 from onyx.server.features.build.api import router as build_router
 from onyx.server.features.build.webapp_proxy import public_build_router
+from onyx.server.features.chat_insights.api import (
+    admin_router as chat_insights_admin_router,
+)
+from onyx.server.features.chat_insights.api import (
+    user_router as chat_export_user_router,
+)
 from onyx.server.features.default_assistant.api import (
     router as default_assistant_router,
 )
@@ -135,6 +141,7 @@ from onyx.server.manage.opensearch_migration.api import (
 from onyx.server.manage.search_settings import router as search_settings_router
 from onyx.server.manage.slack_bot import router as slack_bot_management_router
 from onyx.server.manage.sso.api import admin_router as sso_admin_router
+from onyx.server.manage.sso.bootstrap import bootstrap_sso_providers
 from onyx.server.manage.tracing.api import admin_router as tracing_admin_router
 from onyx.server.manage.users import router as user_router
 from onyx.server.manage.voice.api import admin_router as voice_admin_router
@@ -423,6 +430,8 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:  # noqa: ARG001
             # api_server has the mount the migration job lacks, so this is where it
             # runs. No-op unless AUTH_TYPE=saml with no SAML row yet.
             seed_saml_provider_from_conf_dir(db_session)
+            # Create SSO providers listed in SSO_PROVIDERS_BOOTSTRAP_FILE.
+            bootstrap_sso_providers(db_session)
             # No-op when env is unset or the row already matches.
             seed_jwt_settings_from_env()
             # set up the file store (e.g. create bucket if needed). On multi-tenant,
@@ -638,6 +647,8 @@ def get_application(lifespan_override: Lifespan | None = None) -> FastAPI:
     include_router_with_global_prefix_prepended(application, cost_override_router)
     include_router_with_global_prefix_prepended(application, user_usage_router)
     include_router_with_global_prefix_prepended(application, admin_usage_router)
+    include_router_with_global_prefix_prepended(application, chat_insights_admin_router)
+    include_router_with_global_prefix_prepended(application, chat_export_user_router)
     include_router_with_global_prefix_prepended(application, api_key_router)
     include_router_with_global_prefix_prepended(application, standard_oauth_router)
     include_router_with_global_prefix_prepended(application, federated_router)

@@ -255,6 +255,19 @@ if _GOOGLE_OAUTH_SCOPE_OVERRIDE:
             _GOOGLE_OAUTH_SCOPE_OVERRIDE,
         )
 
+# Local development only: lets SSO IdP URLs (OIDC discovery, SAML metadata)
+# use plain http and private/loopback hosts, e.g. a Keycloak container on the
+# Docker network. Never enable in production.
+ALLOW_INSECURE_SSO_IDP_URLS = (
+    os.environ.get("ALLOW_INSECURE_SSO_IDP_URLS", "").lower() == "true"
+)
+
+# Path to a JSON file with SSO provider rows to create on api_server startup
+# (idempotent by provider name; existing rows are never modified). SAML entries
+# may give "idp_metadata_url" instead of the IdP fields. See
+# deployment/docker_compose/keycloak/README.md.
+SSO_PROVIDERS_BOOTSTRAP_FILE = os.environ.get("SSO_PROVIDERS_BOOTSTRAP_FILE") or None
+
 # OpenID Connect configuration URL for OIDC integrations
 OPENID_CONFIG_URL = os.environ.get("OPENID_CONFIG_URL") or ""
 

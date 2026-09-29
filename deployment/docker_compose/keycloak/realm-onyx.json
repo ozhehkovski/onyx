@@ -1,0 +1,157 @@
+{
+  "realm": "onyx",
+  "enabled": true,
+  "displayName": "Onyx (local)",
+  "loginWithEmailAllowed": true,
+  "registrationAllowed": false,
+  "sslRequired": "none",
+  "users": [
+    {
+      "username": "admin",
+      "email": "admin@example.com",
+      "firstName": "Anna",
+      "lastName": "Admin",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "Password123!",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "default-roles-onyx",
+        "offline_access",
+        "uma_authorization"
+      ]
+    },
+    {
+      "username": "jan",
+      "email": "jan.kowalski@example.com",
+      "firstName": "Jan",
+      "lastName": "Kowalski",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "Password123!",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "default-roles-onyx",
+        "offline_access",
+        "uma_authorization"
+      ]
+    },
+    {
+      "username": "maria",
+      "email": "maria.nowak@example.com",
+      "firstName": "Maria",
+      "lastName": "Nowak",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "Password123!",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "default-roles-onyx",
+        "offline_access",
+        "uma_authorization"
+      ]
+    }
+  ],
+  "clients": [
+    {
+      "clientId": "onyx",
+      "name": "Onyx (OIDC)",
+      "enabled": true,
+      "protocol": "openid-connect",
+      "publicClient": false,
+      "clientAuthenticatorType": "client-secret",
+      "secret": "onyx-local-oidc-secret",
+      "standardFlowEnabled": true,
+      "directAccessGrantsEnabled": false,
+      "redirectUris": [
+        "http://localhost:3030/*"
+      ],
+      "webOrigins": [
+        "http://localhost:3030"
+      ],
+      "rootUrl": "http://localhost:3030",
+      "attributes": {
+        "pkce.code.challenge.method": "S256",
+        "post.logout.redirect.uris": "http://localhost:3030/*"
+      }
+    },
+    {
+      "clientId": "onyx-saml",
+      "name": "Onyx (SAML)",
+      "enabled": true,
+      "protocol": "saml",
+      "redirectUris": [
+        "http://localhost:3030/*"
+      ],
+      "rootUrl": "http://localhost:3030",
+      "frontchannelLogout": true,
+      "attributes": {
+        "saml.client.signature": "false",
+        "saml.server.signature": "true",
+        "saml.assertion.signature": "true",
+        "saml.authnstatement": "true",
+        "saml.force.name.id.format": "true",
+        "saml_name_id_format": "email",
+        "saml_assertion_consumer_url_post": "http://localhost:3030/auth/saml/callback",
+        "saml.signature.algorithm": "RSA_SHA256"
+      },
+      "protocolMappers": [
+        {
+          "name": "email",
+          "protocol": "saml",
+          "protocolMapper": "saml-user-property-mapper",
+          "consentRequired": false,
+          "config": {
+            "user.attribute": "email",
+            "attribute.name": "email",
+            "attribute.nameformat": "Basic",
+            "friendly.name": "email"
+          }
+        },
+        {
+          "name": "firstName",
+          "protocol": "saml",
+          "protocolMapper": "saml-user-property-mapper",
+          "consentRequired": false,
+          "config": {
+            "user.attribute": "firstName",
+            "attribute.name": "givenName",
+            "attribute.nameformat": "Basic"
+          }
+        },
+        {
+          "name": "lastName",
+          "protocol": "saml",
+          "protocolMapper": "saml-user-property-mapper",
+          "consentRequired": false,
+          "config": {
+            "user.attribute": "lastName",
+            "attribute.name": "surname",
+            "attribute.nameformat": "Basic"
+          }
+        }
+      ]
+    }
+  ],
+  "internationalizationEnabled": true,
+  "supportedLocales": [
+    "pl",
+    "en"
+  ],
+  "defaultLocale": "pl"
+}
