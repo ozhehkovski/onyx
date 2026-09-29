@@ -341,7 +341,11 @@ export default function useDataTable<TData extends RowData>(
   } else {
     tableOpts.onGlobalFilterChange = setGlobalFilter;
     tableOpts.getSortedRowModel = getSortedRowModel();
-    tableOpts.getPaginationRowModel = getPaginationRowModel();
+    // An infinite page size means "no pagination". TanStack would compute the
+    // page start as 0 * Infinity = NaN and slice away every row.
+    if (isFinite(pageSizeOption)) {
+      tableOpts.getPaginationRowModel = getPaginationRowModel();
+    }
     tableOpts.getFilteredRowModel = getFilteredRowModel();
     tableOpts.globalFilterFn = (
       row,
