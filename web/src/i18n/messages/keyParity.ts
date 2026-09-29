@@ -15,6 +15,7 @@ import type es from "@/i18n/messages/es.json";
 import type fr from "@/i18n/messages/fr.json";
 import type ja from "@/i18n/messages/ja.json";
 import type ko from "@/i18n/messages/ko.json";
+import type pl from "@/i18n/messages/pl.json";
 import type pt from "@/i18n/messages/pt.json";
 import type zh from "@/i18n/messages/zh.json";
 
@@ -53,4 +54,8 @@ export type KoreanParity = [
 export type ArabicParity = [
   Covers<typeof ar, typeof en>,
   Covers<typeof en, typeof ar>,
+];
+export type PolishParity = [
+  Covers<typeof pl, typeof en>,
+  Covers<typeof en, typeof pl>,
 ];

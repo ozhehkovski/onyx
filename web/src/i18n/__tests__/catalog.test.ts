@@ -20,6 +20,7 @@ import es from "@/i18n/messages/es.json";
 import fr from "@/i18n/messages/fr.json";
 import ja from "@/i18n/messages/ja.json";
 import ko from "@/i18n/messages/ko.json";
+import pl from "@/i18n/messages/pl.json";
 import pt from "@/i18n/messages/pt.json";
 import zh from "@/i18n/messages/zh.json";
 
@@ -32,6 +33,7 @@ const TARGET_LOCALES: Record<string, MessageTree> = {
   fr,
   ja,
   ko,
+  pl,
   pt,
   zh,
 };

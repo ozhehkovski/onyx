@@ -122,6 +122,7 @@ from onyx.db.enums import (
     ThemePreference,
     UsageActorKind,
     UserFileStatus,
+    default_user_language,
 )
 from onyx.db.index_attempt_metrics_models import IndexAttemptStage
 from onyx.db.pydantic_type import PydanticListType, PydanticType
@@ -389,7 +390,7 @@ class User(SQLAlchemyBaseUserTableUUID, Base):
     language: Mapped[str] = mapped_column(
         String,
         nullable=False,
-        default="en",
+        default=default_user_language,
         server_default="en",
     )
     chat_background: Mapped[str | None] = mapped_column(String, nullable=True)

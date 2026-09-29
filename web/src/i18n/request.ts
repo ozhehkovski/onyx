@@ -4,6 +4,7 @@ import { cookies } from "next/headers";
 import {
   DEFAULT_LOCALE,
   LOCALE_COOKIE_NAME,
+  type Locale,
   isSupportedLocale,
   runtimeLocale,
 } from "@/i18n/config";
@@ -33,12 +34,19 @@ function withEnglishFallback(base: MessageTree, overlay: MessageTree) {
 // objects of the same shape; the i18n catalog test enforces this.
 const english = englishMessages as MessageTree;
 
+// Language for visitors without a stored preference (e.g. the login page),
+// set per deployment with the DEFAULT_LOCALE env var on the web server.
+function deploymentDefaultLocale(): Locale {
+  const configured = process.env.DEFAULT_LOCALE?.trim().toLowerCase();
+  return isSupportedLocale(configured) ? configured : DEFAULT_LOCALE;
+}
+
 export default getRequestConfig(async () => {
   const cookieStore = await cookies();
   const cookieLocale = cookieStore.get(LOCALE_COOKIE_NAME)?.value;
   const locale = isSupportedLocale(cookieLocale)
     ? cookieLocale
-    : DEFAULT_LOCALE;
+    : deploymentDefaultLocale();
 
   const messages =
     locale === DEFAULT_LOCALE

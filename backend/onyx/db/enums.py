@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import os
 from enum import Enum as PyEnum
 from typing import ClassVar
 
@@ -335,6 +336,7 @@ class SupportedLanguage(str, PyEnum):
     ZH = "zh"
     KO = "ko"
     AR = "ar"
+    PL = "pl"
 
 
 # Prompts name the language in English so the model gets a word, not a code.
@@ -348,7 +350,16 @@ SUPPORTED_LANGUAGE_ENGLISH_NAMES: dict[SupportedLanguage, str] = {
     SupportedLanguage.ZH: "Simplified Chinese",
     SupportedLanguage.KO: "Korean",
     SupportedLanguage.AR: "Arabic",
+    SupportedLanguage.PL: "Polish",
 }
+
+
+def default_user_language() -> str:
+    """Language for newly created users: DEFAULT_USER_LANGUAGE, or English
+    when it is unset or not a supported language."""
+    value = (os.environ.get("DEFAULT_USER_LANGUAGE") or "").strip().lower()
+    supported = {language.value for language in SupportedLanguage}
+    return value if value in supported else SupportedLanguage.EN.value
 
 
 class DefaultAppMode(str, PyEnum):
