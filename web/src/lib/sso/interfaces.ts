@@ -30,3 +30,14 @@ export interface SSOProviderUpdateRequest {
   allowed_email_domains?: string[];
   config?: Record<string, string | boolean | string[]>;
 }
+
+export interface SAMLMetadataImportRequest {
+  metadata_url?: string;
+  metadata_xml?: string;
+}
+
+export interface SAMLIdPMetadata {
+  idp_entity_id: string;
+  idp_sso_url: string;
+  idp_x509_cert: string;
+}

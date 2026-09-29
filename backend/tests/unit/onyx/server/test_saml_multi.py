@@ -8,6 +8,7 @@ from types import SimpleNamespace
 from typing import Any, cast
 
 import pytest
+from fastapi import Response
 from onelogin.saml2.auth import OneLogin_Saml2_Auth
 from sqlalchemy.orm import Session
 
@@ -47,6 +48,12 @@ def test_build_saml_settings_fixed_acs() -> None:
     assert settings["idp"]["entityId"] == _IDP["idp_entity_id"]
     assert settings["idp"]["singleSignOnService"]["url"] == _IDP["idp_sso_url"]
     assert settings["idp"]["x509cert"] == "IDPCERT"
+
+
+def test_build_saml_settings_accepts_repeated_attributes() -> None:
+    # Keycloak's default role mapper repeats the "Role" attribute name.
+    settings = saml_multi.build_saml_settings(_config())
+    assert settings["security"]["allowRepeatAttributeName"] is True
 
 
 def test_build_saml_settings_optional_sp_defaults_empty() -> None:
@@ -203,3 +210,43 @@ def test_extract_email_missing_raises() -> None:
     auth = _fake_auth({"displayName": ["Alice"]})
     with pytest.raises(OnyxError):
         saml_multi._extract_user_email(auth, _config())
+
+
+def _request(accept: str) -> Any:
+    return SimpleNamespace(headers={"accept": accept})
+
+
+def _login_response() -> Response:
+    response = Response(status_code=204)
+    response.set_cookie("fastapiusersauth", "token")
+    return response
+
+
+def test_browser_saml_post_redirects_into_app_with_cookie() -> None:
+    redirect = saml_multi.browser_login_redirect(
+        _request("text/html,application/xhtml+xml"), _login_response(), "/app?x=1"
+    )
+    assert redirect.status_code == 303
+    assert redirect.headers["location"].endswith("/app?x=1")
+    assert "fastapiusersauth=token" in redirect.headers["set-cookie"]
+
+
+def test_browser_saml_redirect_ignores_unsafe_or_auth_relay_state() -> None:
+    for relay_state in (
+        "http://evil.example.com/",
+        "//evil.example.com",
+        "/auth/saml/keycloak-saml/authorize",
+        None,
+    ):
+        redirect = saml_multi.browser_login_redirect(
+            _request("text/html"), _login_response(), relay_state
+        )
+        assert redirect.headers["location"].endswith("/")
+        assert "evil" not in redirect.headers["location"]
+
+
+def test_non_browser_saml_callback_keeps_204() -> None:
+    response = _login_response()
+    assert (
+        saml_multi.browser_login_redirect(_request("*/*"), response, "/app") is response
+    )

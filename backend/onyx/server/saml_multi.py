@@ -3,6 +3,7 @@ import uuid
 from typing import Any, NoReturn, TypedDict
 
 from fastapi import APIRouter, Depends, Request, Response
+from fastapi.responses import RedirectResponse
 from fastapi_users.authentication import Strategy
 from onelogin.saml2.auth import OneLogin_Saml2_Auth
 from onelogin.saml2.xml_utils import OneLogin_Saml2_XML
@@ -72,11 +73,16 @@ class _SamlIdpSettings(TypedDict):
     x509cert: str
 
 
+class _SamlSecuritySettings(TypedDict):
+    allowRepeatAttributeName: bool
+
+
 class _SamlSettings(TypedDict):
     strict: bool
     debug: bool
     sp: _SamlSpSettings
     idp: _SamlIdpSettings
+    security: _SamlSecuritySettings
 
 
 def build_saml_settings(config: SAMLProviderConfig) -> _SamlSettings:
@@ -101,6 +107,11 @@ def build_saml_settings(config: SAMLProviderConfig) -> _SamlSettings:
                 "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect",
             },
             "x509cert": config.idp_x509_cert,
+        },
+        "security": {
+            # Keycloak's default SAML role mapper sends one "Role" attribute
+            # per role. Only the email attribute is read, so repeats are safe.
+            "allowRepeatAttributeName": True,
         },
     }
 
@@ -356,7 +367,31 @@ async def _process_saml_callback(
     )
     response = await auth_backend.login(strategy, user)
     await user_manager.on_after_login(user, request, response)
-    return response
+    relay_state = req["post_data"].get("RelayState") or req["get_data"].get(
+        "RelayState"
+    )
+    return browser_login_redirect(
+        request, response, relay_state if isinstance(relay_state, str) else None
+    )
+
+
+def browser_login_redirect(
+    request: Request, login_response: Response, relay_state: str | None
+) -> Response:
+    """nginx routes /auth/saml straight to the API, so the IdP's form POST
+    lands here in the browser. A bare 204 would leave the user on the IdP
+    page, so browsers get a 303 into the app with the session cookie. Other
+    callers (the web server's callback wrapper) keep the 204 contract."""
+    if "text/html" not in request.headers.get("accept", ""):
+        return login_response
+    target = _sanitize_relay_state(relay_state) or "/"
+    if target.startswith("/auth/"):
+        target = "/"
+    redirect = RedirectResponse(url=f"{WEB_DOMAIN}{target}", status_code=303)
+    for name, value in login_response.raw_headers:
+        if name.lower() == b"set-cookie":
+            redirect.raw_headers.append((name, value))
+    return redirect
 
 
 @router.post("/logout")

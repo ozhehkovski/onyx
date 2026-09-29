@@ -23,6 +23,7 @@ import type {
 import { useSupportedSSOProviderTypes } from "@/lib/sso/hooks";
 import { NEXT_PUBLIC_CLOUD_ENABLED } from "@/lib/constants";
 import { createSSOProvider, updateSSOProvider } from "@/lib/sso/svc";
+import SAMLMetadataImport from "@/sections/modals/sso/SAMLMetadataImport";
 import SSODomainVerification from "@/sections/modals/sso/SSODomainVerification";
 import {
   CONFIG_FIELDS_BY_TYPE,
@@ -407,6 +408,25 @@ export function SSOProviderModal({ provider, onSaved }: SSOProviderModalProps) {
                       )}
                     />
                   </InputVertical>
+
+                  {providerType === "SAML" && (
+                    <SAMLMetadataImport
+                      onImported={(metadata) => {
+                        void setFieldValue(
+                          "config.idp_entity_id",
+                          metadata.idp_entity_id
+                        );
+                        void setFieldValue(
+                          "config.idp_sso_url",
+                          metadata.idp_sso_url
+                        );
+                        void setFieldValue(
+                          "config.idp_x509_cert",
+                          metadata.idp_x509_cert
+                        );
+                      }}
+                    />
+                  )}
 
                   {CONFIG_FIELDS_BY_TYPE[providerType].map((field) => (
                     <InputVertical

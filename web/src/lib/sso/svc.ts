@@ -2,6 +2,8 @@ import { SWR_KEYS } from "@/lib/swr-keys";
 import type { SSOProviderOption, SSOProviderType } from "@/lib/auth/types";
 import { FetchError, parseErrorDetail } from "@/lib/fetcher";
 import {
+  SAMLIdPMetadata,
+  SAMLMetadataImportRequest,
   SSOProviderCreateRequest,
   SSOProviderResponse,
   SSOProviderUpdateRequest,
@@ -16,7 +18,8 @@ type SSORequestBody =
   | { email: string }
   | { enabled: boolean }
   | { domains: string[] }
-  | { domain: string };
+  | { domain: string }
+  | SAMLMetadataImportRequest;
 
 // FetchError carries the status the shared SWR guard reads to stop retrying and
 // send an expired session to the login page.
@@ -124,5 +127,16 @@ export function verifyDomainViaDns(domain: string): Promise<SSOLoginDomains> {
     `${SWR_KEYS.adminSsoDomains}/verify-dns`,
     "POST",
     { domain }
+  );
+}
+
+/** Reads IdP metadata into the SAML IdP fields. Stores nothing. */
+export function importSAMLMetadata(
+  request: SAMLMetadataImportRequest
+): Promise<SAMLIdPMetadata> {
+  return ssoRequest<SAMLIdPMetadata>(
+    "/api/admin/sso/saml-metadata",
+    "POST",
+    request
   );
 }

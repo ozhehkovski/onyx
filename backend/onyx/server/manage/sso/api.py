@@ -6,6 +6,12 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from onyx.auth.permissions import require_permission
+from onyx.auth.saml_metadata import (
+    InvalidSAMLMetadata,
+    SAMLIdPMetadata,
+    fetch_saml_idp_metadata,
+    parse_saml_idp_metadata,
+)
 from onyx.auth.sso_url_guard import UnsafeSSOUrl, validate_idp_url
 from onyx.configs.app_configs import WEB_DOMAIN
 from onyx.db.engine.sql_engine import get_session
@@ -26,6 +32,7 @@ from onyx.error_handling.error_codes import OnyxErrorCode
 from onyx.error_handling.exceptions import OnyxError
 from onyx.server.manage.get_state import invalidate_sso_provider_options_cache
 from onyx.server.manage.sso.models import (
+    SAMLMetadataImportRequest,
     SSODomainRecordsRequest,
     SSODomainVerifyRequest,
     SSOLoginDomainsResponse,
@@ -367,3 +374,25 @@ async def verify_sso_domain_via_dns_endpoint(
         )
     invalidate_sso_provider_options_cache()
     return _login_domains_response(tenant_id)
+
+
+@admin_router.post("/saml-metadata")
+async def import_saml_idp_metadata(
+    request: SAMLMetadataImportRequest,
+    _: User = Depends(require_permission(Permission.FULL_ADMIN_PANEL_ACCESS)),
+) -> SAMLIdPMetadata:
+    """Reads IdP metadata (e.g. Keycloak's SAML descriptor) into the IdP fields
+    of a SAML provider form. Stores nothing."""
+    url = (request.metadata_url or "").strip()
+    xml = (request.metadata_xml or "").strip()
+    if bool(url) == bool(xml):
+        raise OnyxError(
+            OnyxErrorCode.INVALID_INPUT,
+            "Provide either metadata_url or metadata_xml.",
+        )
+    try:
+        if url:
+            return await run_in_threadpool(fetch_saml_idp_metadata, url)
+        return parse_saml_idp_metadata(xml)
+    except (UnsafeSSOUrl, InvalidSAMLMetadata) as e:
+        raise OnyxError(OnyxErrorCode.INVALID_INPUT, str(e)) from e

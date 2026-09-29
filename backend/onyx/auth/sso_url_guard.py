@@ -3,7 +3,8 @@ names, at an address the server should not fetch."""
 
 from urllib.parse import urlsplit
 
-from onyx.server.security.models import outbound_ssrf_params
+from onyx.configs.app_configs import ALLOW_INSECURE_SSO_IDP_URLS
+from onyx.server.security.models import OutboundSSRFParams, outbound_ssrf_params
 from onyx.server.security.store import get_security_settings
 from onyx.utils.url import SSRFException, validate_outbound_http_url
 
@@ -27,12 +28,21 @@ def validate_idp_url(url: str, *, field: str) -> None:
     if parts.username or parts.password:
         raise UnsafeSSOUrl(f"{field} must not carry credentials")
 
-    params = outbound_ssrf_params(get_security_settings().ssrf_protection_level)
+    if ALLOW_INSECURE_SSO_IDP_URLS:
+        # Local development against an IdP on the Docker network or loopback
+        # over plain http. The cloud-metadata floor stays on.
+        params = OutboundSSRFParams(
+            allow_private_network=True,
+            block_loopback_and_link_local=False,
+            block_link_local_only=True,
+        )
+    else:
+        params = outbound_ssrf_params(get_security_settings().ssrf_protection_level)
     try:
         validate_outbound_http_url(
             url,
             allow_private_network=params.allow_private_network,
-            https_only=True,
+            https_only=not ALLOW_INSECURE_SSO_IDP_URLS,
             block_loopback_and_link_local=params.block_loopback_and_link_local,
             block_link_local_only=params.block_link_local_only,
         )

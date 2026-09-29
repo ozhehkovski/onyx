@@ -83,3 +83,10 @@ class SSOProviderResponse(BaseModel):
             config=config,
             redirect_uri=redirect_uri,
         )
+
+
+class SAMLMetadataImportRequest(BaseModel):
+    """Exactly one of the two: a URL the server fetches, or the XML itself."""
+
+    metadata_url: str | None = None
+    metadata_xml: str | None = None
